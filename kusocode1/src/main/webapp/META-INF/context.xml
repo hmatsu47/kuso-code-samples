@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Context>
+  <Resource
+    name="jdbc/picture"
+    auth="Container"
+    type="javax.sql.DataSource"
+    driverClassName="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://127.0.0.1:3306/picture"
+    connectionProperties="autoReconnect=true;verifyServerCertificate=false;useSSL=false;requireSSL=false;useUnicode=true;characterEncoding=UTF-8;"
+    username="root"
+    password="root@kus0c0de"
+    initialSize="0"
+    maxTotal="10"
+    maxIdle="0"
+    minIdle="0"
+    validationQuery="select 1" />
+  <Resource
+    name="jdbc/count"
+    auth="Container"
+    type="javax.sql.DataSource"
+    driverClassName="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://127.0.0.1:3306/picture"
+    connectionProperties="autoReconnect=true;verifyServerCertificate=false;useSSL=false;requireSSL=false;useUnicode=true;characterEncoding=UTF-8;"
+    username="root"
+    password="root@kus0c0de"
+    initialSize="0"
+    maxTotal="10"
+    maxIdle="0"
+    minIdle="0"
+    validationQuery="select 1" />
+</Context>
