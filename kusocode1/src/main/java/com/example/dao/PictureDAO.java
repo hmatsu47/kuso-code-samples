@@ -13,44 +13,44 @@ import javax.sql.DataSource;
 import dto.Picture;
 
 public class PictureDAO {
-	private Connection db;
-	private PreparedStatement ps;
-	private ResultSet rs;
+    private Connection db;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
-	private void connect() throws Exception {
-		Context context = new InitialContext();
-		DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/picture");
-		this.db = ds.getConnection();
-	}
+    private void connect() throws Exception {
+        Context context = new InitialContext();
+        DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/picture");
+        this.db = ds.getConnection();
+    }
 
-	private void disconnect() {
-		try {
-			if (rs != null) {
-				rs.close();
-			}
-			if (ps != null) {
-				ps.close();
-			}
-			if (db != null) {
-				db.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    private void disconnect() {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public Picture find(int id) {
+    public Picture find(int id) {
         String title = null;
         String description = null;
         byte[] image = null;
-		try {
-			this.connect();
-			ps = db.prepareStatement("SELECT * FROM picture.picture WHERE id = ?");
+        try {
+            this.connect();
+            ps = db.prepareStatement("SELECT * FROM picture.picture WHERE id = ?");
             ps.setInt(1, id);
-			rs = ps.executeQuery();
+            rs = ps.executeQuery();
             if (rs.next()) {
-		    	title = rs.getString("title");
-			    description = rs.getString("description");
+                title = rs.getString("title");
+                description = rs.getString("description");
                 InputStream is = rs.getBinaryStream("image");
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 byte[] bs = new byte[1024];
@@ -60,12 +60,12 @@ public class PictureDAO {
                 }
                 image = baos.toByteArray();
             }
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-			e.printStackTrace();
-		}finally {
-			this.disconnect();
-		}
-		return new Picture(id, title, description, image);
-	}
+            e.printStackTrace();
+        }finally {
+            this.disconnect();
+        }
+        return new Picture(id, title, description, image);
+    }
 }
