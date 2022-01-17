@@ -47,5 +47,5 @@ public class ListItem extends HttpServlet {
     res.setContentType("application/json; charset=utf-8");
     out = res.getWriter();
     out.println(sb.toString());
-  }
+    }
 }
