@@ -1,6 +1,4 @@
-package dao;
-
-import java.io.*;
+package com.example.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +10,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import dto.AccessCount;
+import com.example.dto.AccessCount;
 
 public class AccessCountDAO {
     private Connection db;

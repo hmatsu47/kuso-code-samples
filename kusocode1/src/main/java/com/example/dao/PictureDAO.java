@@ -1,4 +1,4 @@
-package dao;
+package com.example.dao;
 
 import java.io.*;
 
@@ -10,7 +10,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import dto.Picture;
+import com.example.dto.Picture;
 
 public class PictureDAO {
     private Connection db;
