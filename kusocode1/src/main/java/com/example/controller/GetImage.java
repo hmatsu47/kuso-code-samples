@@ -39,5 +39,5 @@ public class GetImage extends HttpServlet {
     res.setContentType("application/json; charset=utf-8");
     out = res.getWriter();
     out.println(sb.toString());
-  }
+    }
 }
