@@ -15,89 +15,89 @@ import javax.sql.DataSource;
 import dto.AccessCount;
 
 public class AccessCountDAO {
-	private Connection db;
-	private PreparedStatement ps;
-	private ResultSet rs;
+    private Connection db;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
-	private void connect() throws Exception {
-		Context context = new InitialContext();
-		DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/count");
-		this.db = ds.getConnection();
-	}
+    private void connect() throws Exception {
+        Context context = new InitialContext();
+        DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/count");
+        this.db = ds.getConnection();
+    }
 
-	private void disconnect() {
-		try {
-			if (rs != null) {
-				rs.close();
-			}
-			if (ps != null) {
-				ps.close();
-			}
-			if (db != null) {
-				db.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    private void disconnect() {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public List<AccessCount> findTopCount() {
+    public List<AccessCount> findTopCount() {
         List<AccessCount> countList = new ArrayList<>();
-		try {
-			this.connect();
+        try {
+            this.connect();
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT * FROM picture.access_count");
             sb.append("  WHERE picture_id IN (");
             sb.append("    SELECT id FROM picture.picture");
             sb.append("  ) ");
             sb.append("  ORDER BY access_count DESC, picture_id ASC");
-			ps = db.prepareStatement(sb.toString());
-			rs = ps.executeQuery();
+            ps = db.prepareStatement(sb.toString());
+            rs = ps.executeQuery();
             while (rs.next()) {
-		    	int id = rs.getInt("id");
-		    	int pictureId = rs.getInt("picture_id");
-		    	int count = rs.getInt("access_count");
+                int id = rs.getInt("id");
+                int pictureId = rs.getInt("picture_id");
+                int count = rs.getInt("access_count");
                 AccessCount accessCount = new AccessCount(id, pictureId, count);
                 countList.add(accessCount);
             }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			this.disconnect();
-		}
-		return countList;
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.disconnect();
+        }
+        return countList;
+    }
 
     public void incrementCount(int pictureId) {
         try {
-			this.connect();
+            this.connect();
             db.setAutoCommit(false);
-			ps = db.prepareStatement("LOCK TABLES picture.access_count WRITE");
-			ps.executeUpdate();
-			ps = db.prepareStatement("SELECT * FROM picture.access_count WHERE picture_id = ?");
+            ps = db.prepareStatement("LOCK TABLES picture.access_count WRITE");
+            ps.executeUpdate();
+            ps = db.prepareStatement("SELECT * FROM picture.access_count WHERE picture_id = ?");
             ps.setInt(1, pictureId);
-			rs = ps.executeQuery();
+            rs = ps.executeQuery();
             int count = 0;
             if (rs.next()) {
-		        count = rs.getInt("access_count");
+                count = rs.getInt("access_count");
             }
-			ps = db.prepareStatement("UPDATE picture.access_count SET access_count = ? WHERE picture_id = ?");
+            ps = db.prepareStatement("UPDATE picture.access_count SET access_count = ? WHERE picture_id = ?");
             ps.setInt(1, count + 1);
             ps.setInt(2, pictureId);
-			ps.executeUpdate();
-			ps = db.prepareStatement("COMMIT");
-			ps.executeUpdate();
-			ps = db.prepareStatement("UNLOCK TABLES");
-			ps.executeUpdate();
-		} catch (Exception e) {
+            ps.executeUpdate();
+            ps = db.prepareStatement("COMMIT");
+            ps.executeUpdate();
+            ps = db.prepareStatement("UNLOCK TABLES");
+            ps.executeUpdate();
+        } catch (Exception e) {
             try {
                 db.rollback();
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
             e.printStackTrace();
-		}finally {
-			this.disconnect();
-		}
+        } finally {
+            this.disconnect();
+        }
     }
 }
