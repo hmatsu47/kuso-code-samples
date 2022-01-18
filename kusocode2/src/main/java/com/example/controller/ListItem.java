@@ -19,6 +19,13 @@ public class ListItem extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
+    String startStr = req.getParameter("start");
+    int start = 1;
+    if (startStr != null) {
+        start = Integer.parseInt(startStr);
+    }
+    int end = start + 9;
+
     AccessCountDAO countDAO = new AccessCountDAO();
     PictureDAO pictureDAO = new PictureDAO();
     StringBuffer sb = new StringBuffer();
@@ -26,18 +33,22 @@ public class ListItem extends HttpServlet {
 
     List<AccessCount> countList = countDAO.findTopCount();
     sb.append("[");
+    int i = 1;
     for (AccessCount accessCount: countList) {
         int pictureId = accessCount.getPictureId();
         Picture picture = pictureDAO.find(pictureId);
         String title = picture.getTitle();
         String description = picture.getDescription();
         int count = accessCount.getAccessCount();
-        sb.append("{");
-        sb.append("\"pictureId\":" + String.valueOf(pictureId) + ",");
-        sb.append("\"title\":\"" + title + "\",");
-        sb.append("\"description\":\"" + description + "\",");
-        sb.append("\"count\":" + String.valueOf(count));
-        sb.append("},");
+        if (i >= start && i <= end) {
+            sb.append("{");
+            sb.append("\"pictureId\":" + String.valueOf(pictureId) + ",");
+            sb.append("\"title\":\"" + title + "\",");
+            sb.append("\"description\":\"" + description + "\",");
+            sb.append("\"count\":" + String.valueOf(count));
+            sb.append("},");
+        }
+        i = i + 1;
     }
     if (sb.length() > 1) {
         sb.deleteCharAt(sb.length() - 1);

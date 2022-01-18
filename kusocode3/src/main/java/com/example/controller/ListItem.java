@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.example.dao.*;
 import com.example.dto.*;
+import com.example.model.*;
 
 @WebServlet("/ListItem")
 public class ListItem extends HttpServlet {
@@ -19,7 +20,7 @@ public class ListItem extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-    AccessCountDAO countDAO = new AccessCountDAO();
+    CountLogDAO countDAO = new CountLogDAO();
     PictureDAO pictureDAO = new PictureDAO();
     StringBuffer sb = new StringBuffer();
     PrintWriter out;
