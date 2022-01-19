@@ -21,10 +21,11 @@ public class ListItem extends HttpServlet {
 
     String startStr = req.getParameter("start");
     int start = 1;
+    int end   = 25;
     if (startStr != null) {
         start = Integer.parseInt(startStr);
+        end   = start + 9;
     }
-    int end = start + 9;
 
     AccessCountDAO countDAO = new AccessCountDAO();
     PictureDAO pictureDAO = new PictureDAO();

@@ -98,4 +98,16 @@ public class AccessCountDAO {
             this.disconnect();
         }
     }
+
+    public void initCount() {
+        try {
+            this.connect();
+            ps = db.prepareStatement("UPDATE access_count SET access_count = 0 WHERE id < 26");
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.disconnect();
+        }
+    }
 }
