@@ -73,11 +73,18 @@ public class CountLogDAO {
             ps.setInt(1, pictureId);
             ps.executeUpdate();
         } catch (Exception e) {
-            try {
-                db.rollback();
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
+            e.printStackTrace();
+        } finally {
+            this.disconnect();
+        }
+    }
+
+    public void initCount() {
+        try {
+            this.connect();
+            ps = db.prepareStatement("DELETE FROM count_log WHERE id > 1000");
+            ps.executeUpdate();
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             this.disconnect();
