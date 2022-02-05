@@ -5,6 +5,7 @@
 - MySQL または MariaDB 用です
 - データは以下の方法で CSV 形式にしたものを ZIP 化してあります
   - `LOAD DATA INFILE` でテーブルにロードします
+  - DB の設定で、 `max_allowed_packet` を大きな値にしておくことと、 `character_set_XXX` （特に `character_set_database` ）を `utf8mb4` にしておくのを忘れずに
 
 ```sql:
 SELECT * FROM picture.access_count INTO OUTFILE 'access_count.csv' FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n';
